@@ -9,6 +9,10 @@ const couponSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Minimum total cart value need to be defined"]
     },
+    discount:{
+        type: Number,
+        required: [true, "Please give discount value"]
+    },
     startDate:{
         type: Date,
         required: [true, "Start date of coupon not specified"],
