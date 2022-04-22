@@ -8,6 +8,7 @@ function validateCoupon(coupon){
 async function checkoutCart(req,res){
     const {totalAmount, couponCode} = req.body
     let discountedPrice = 0;
+    let discountAmount = 0 ;
     const coupon = await Coupon.findOne({coupon:couponCode})
     if(!coupon){
         return res.status(400).json({
@@ -31,9 +32,10 @@ async function checkoutCart(req,res){
     //check minimum cart value
     if(coupon.minAmount <= totalAmount){
         if(coupon.couponType == "flat"){
-            discountedPrice = totalAmount - coupon.discount
+            discountAmount = coupon.discount
+            discountedPrice = totalAmount - discountAmount
         }else{
-           let discountAmount = coupon.discount*totalAmount*0.01
+             discountAmount = coupon.discount*totalAmount*0.01
             if(discountAmount>coupon.maxDiscount) {
                 discountAmount = coupon.maxDiscount
             }
@@ -51,7 +53,9 @@ async function checkoutCart(req,res){
     return res.status(200).json({
         status: "success",
         data: {
-             discountedPrice
+            discountAmount,
+            discountedPrice
+
         }
     })
 }
