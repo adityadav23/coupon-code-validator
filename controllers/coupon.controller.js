@@ -1,14 +1,14 @@
 const Coupon = require('../models/coupon.model')
 
-
+//Gets all the coupons from the database
 async function getCoupons(req,res){
     try {
         const coupons = await Coupon.find({});
-        //If coupon not created
+        //If coupons not foundss
         if(!coupons){
              res.status(400).json({
                  status: "Failed",
-                 msg: "Coupon not created!"
+                 msg: "No coupon created!"
              })
         }
 
@@ -28,7 +28,7 @@ async function getCoupons(req,res){
  
  }
  
-
+//To create a coupon 
 async function createCoupon(req,res){
    try {
        const coupon = await Coupon.create(req.body);

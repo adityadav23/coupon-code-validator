@@ -1,15 +1,17 @@
 const Coupon = require('../models/coupon.model')
 
+//check if coupon code expired
 function validateCoupon(coupon){
-    //check if coupon code expired
      return (coupon.startDate< Date.now() && coupon.endDate > Date.now())
 }
 
+//Get the Discount and Discounted price
 async function checkoutCart(req,res){
     const {totalAmount, couponCode} = req.body
     let discountedPrice = 0;
     let discountAmount = 0 ;
     const coupon = await Coupon.findOne({coupon:couponCode})
+    //If coupon not found in database
     if(!coupon){
         return res.status(400).json({
             status:"failed",
@@ -18,7 +20,7 @@ async function checkoutCart(req,res){
             }
         })
     }
-
+    //check coupon validity
     const isValid = validateCoupon(coupon)
     if(!isValid){
         return res.status(400).json({
